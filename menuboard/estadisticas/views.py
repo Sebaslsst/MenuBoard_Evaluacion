@@ -5,8 +5,7 @@ from .models import  Item_Factura
 import matplotlib.pyplot as plt
 from io import BytesIO
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from .models import Reporte
+
 
 def estadistica(request):
     return render(request, 'Modulo6/estadistica.html')
@@ -91,4 +90,10 @@ def grafico_producto(request):
     return HttpResponse(buffer, content_type='image/png')
 
 
+def checkout(request, factura_id):
+    # Procesa la factura por su ID
+    return HttpResponse(f"Procesando factura con ID: {factura_id}")
 
+
+def index(request):
+    return render(request, 'index.html')

@@ -237,7 +237,7 @@ class Reporte(models.Model):
         # Generar las estadísticas detalladas
         estadisticas = self.generar_estadisticas()
 
-        # Renderizar un template HTML con las estadísticas
+        # Renderizar un assets2 HTML con las estadísticas
         return render(request, 'reporte.html', {
             'titulo': self.titulo,
             'fecha_inicio': self.fecha_inicio,

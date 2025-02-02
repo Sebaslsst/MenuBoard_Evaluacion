@@ -1,7 +1,7 @@
 from enum import Enum
 from django.core.validators import MinValueValidator
 from django.db import models
-
+from estadisticas.models import Factura
 
 #Enumerador:
 class Estado(Enum):

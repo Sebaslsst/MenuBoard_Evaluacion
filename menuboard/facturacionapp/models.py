@@ -201,3 +201,12 @@ class HistorialDeFactura(models.Model):
 
     def _str_(self):
         return f"Historial de Factura {self.factura.numero}"
+
+class PagoStripe(models.Model):
+    factura = models.OneToOneField(Factura, on_delete=models.CASCADE, related_name="pago_stripe")
+    stripe_payment_id = models.CharField(max_length=100, unique=True)
+    monto_pagado = models.FloatField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return f"Pago {self.stripe_payment_id} - {self.monto_pagado} USD"
