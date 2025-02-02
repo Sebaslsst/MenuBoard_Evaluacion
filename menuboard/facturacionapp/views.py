@@ -54,4 +54,4 @@ def payment_cancel(request):
 
 # Create your views here.
 def index(request):
-    return render(request, '../static/../menus/static/assets2/../templates/index.html')
+    return render(request, 'index.html')
