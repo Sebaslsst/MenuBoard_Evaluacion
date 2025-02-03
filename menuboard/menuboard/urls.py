@@ -28,5 +28,11 @@ urlpatterns = [
     path('Facturacion/',include('facturacionapp.urls')),
     path('home/',views.home),
     path('index/',views.index),
+    path('login/',views.login),
+    path('inventario/',views.inventario),
+    path('registrate/',views.registrate),
+    path('',views.inicio),
+    path('guardar_item/', views.guardar_item, name='guardar_item'),
+    path('guardar_item/<int:id>/', views.guardar_item, name='guardar_item'),
 
 ]
