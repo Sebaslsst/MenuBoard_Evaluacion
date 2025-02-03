@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
 from .models import Factura,PagoStripe
+from inventario.models import Inventario
 from django.http import HttpResponse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -66,3 +67,29 @@ def inventario(request):
 
 def registrate(request):
     return render(request,'registrate.html')
+
+
+def inicio(request):
+    return render(request,'inicio.html')
+
+
+def guardar_item(request, id=None):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        cantidad = request.POST.get('cantidad')
+        caducidad = request.POST.get('caducidad')
+        precio = request.POST.get('precio')
+
+        if id:
+            item = Inventario.objects.get(id=id)
+        else:
+            item = Inventario()
+
+        item.nombre = nombre
+        item.cantidad = cantidad
+        item.caducidad = caducidad
+        item.precio = precio
+        item.save()
+
+        return redirect('inventario')  # O la vista correspondiente
+    return render(request, 'inventario.html')
