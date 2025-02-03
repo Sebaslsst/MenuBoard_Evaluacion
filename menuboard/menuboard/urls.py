@@ -28,5 +28,8 @@ urlpatterns = [
     path('Facturacion/',include('facturacionapp.urls')),
     path('home/',views.home),
     path('index/',views.index),
+    path('login/',views.login),
+    path('inventario/',views.inventario),
+    path('registrate/',views.registrate),
 
 ]

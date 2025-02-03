@@ -55,3 +55,14 @@ def payment_cancel(request):
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
+
+def login(request):
+    return render(request,'login.html')
+
+
+def inventario(request):
+    return render(request,'inventario.html')
+
+
+def registrate(request):
+    return render(request,'registrate.html')
