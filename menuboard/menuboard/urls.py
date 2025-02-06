@@ -37,5 +37,7 @@ urlpatterns = [
     path('menu/',views.menu),
     path('filtrar_item/', filtrar_item, name='filtrar_item'),
     path('reservacion/',views.reservacion),
+    path('google/', include('googleMaps.urls')),
+    path('compra/',views.compra),
 
 ]

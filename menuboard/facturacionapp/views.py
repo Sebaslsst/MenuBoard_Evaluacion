@@ -101,3 +101,7 @@ def menu(request):
 
 def reservacion(request):
     return render(request, 'reservacion.html')
+
+
+def compra(request):
+    return render(request, 'compra.html')

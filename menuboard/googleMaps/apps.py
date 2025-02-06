@@ -1,0 +1,12 @@
+from django.apps import AppConfig
+
+
+class GooglemapsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'googleMaps'
+from django.apps import AppConfig
+
+
+class ProjectContentConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'googleMaps'
