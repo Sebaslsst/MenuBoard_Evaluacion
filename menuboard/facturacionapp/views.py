@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
 from .models import Factura,PagoStripe
-from inventario.models import Inventario
+from inventario.models import Inventario, Insumo
 from django.http import HttpResponse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -93,3 +93,11 @@ def guardar_item(request, id=None):
 
         return redirect('inventario')  # O la vista correspondiente
     return render(request, 'inventario.html')
+
+
+def menu(request):
+    return render(request, 'menu.html')
+
+
+def reservacion(request):
+    return render(request, 'reservacion.html')

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservación de Mesas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .contenedor {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .boton {
+            background-color: #8B0000;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+        }
+        .boton-rojo {
+            background-color: #D32F2F;
+        }
+        .mesa {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+        .disponible { color: green; }
+        .ocupada { color: red; }
+        .tabla-reservas {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .tabla-reservas th, .tabla-reservas td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .tabla-reservas th {
+            background-color: #f2f2f2;
+        }
+        .pendiente { color: orange; font-weight: bold; }
+        .confirmada { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- Selector de Vista -->
+    <div class="contenedor" style="display: block;">
+        <h2>Bienvenido</h2>
+        <button class="boton" onclick="mostrarSeccion('reservaciones')">Cliente - Reservar Mesa</button>
+        <button class="boton" onclick="mostrarSeccion('admin')">Administrador - Ver Reservas</button>
+    </div>
+
+    <!-- Vista Cliente: Reservación de Mesas -->
+    <div id="reservaciones" class="contenedor">
+        <h2>Reservación de Mesas</h2>
+        <div class="mesa">
+            <span>Mesa 1 (Capacidad: 4)</span>
+            <span class="disponible">Disponible</span>
+            <button class="boton" onclick="mostrarFormulario(1)">Reservar</button>
+        </div>
+        <div class="mesa">
+            <span>Mesa 2 (Capacidad: 2)</span>
+            <span class="disponible">Disponible</span>
+            <button class="boton" onclick="mostrarFormulario(2)">Reservar</button>
+        </div>
+        <div class="mesa">
+            <span>Mesa 3 (Capacidad: 6)</span>
+            <span class="disponible">Disponible</span>
+            <button class="boton" onclick="mostrarFormulario(3)">Reservar</button>
+        </div>
+        <button class="boton" onclick="volverInicio()">Volver</button>
+    </div>
+
+    <!-- Formulario de Reservación -->
+    <div id="formulario" class="contenedor">
+        <h2>Reservar Mesa <span id="mesaSeleccionada"></span></h2>
+        <input type="text" id="nombre" placeholder="Tu Nombre">
+        <input type="email" id="correo" placeholder="Tu Correo">
+        <input type="datetime-local" id="fechaHora">
+        <button class="boton" onclick="confirmarReserva()">Confirmar Reserva</button>
+        <button class="boton" onclick="volverReservaciones()">Volver</button>
+    </div>
+
+    <!-- Confirmación de Reserva -->
+    <div id="confirmacion" class="contenedor">
+        <h2>¡Reserva Confirmada! 🎉</h2>
+        <p>Tu reservación ha sido registrada.</p>
+        <button class="boton" onclick="volverReservaciones()">Volver a Mesas</button>
+    </div>
+
+    <!-- Vista Administrador: Lista de Reservas -->
+    <div id="admin" class="contenedor">
+        <h2>Administración de Reservas</h2>
+        <div id="listaReservas">
+            <table class="tabla-reservas">
+                <thead>
+                    <tr>
+                        <th>Mesa</th>
+                        <th>Cliente</th>
+                        <th>Correo</th>
+                        <th>Hora de Reserva</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReservas"></tbody>
+            </table>
+        </div>
+        <button class="boton" onclick="volverInicio()">Volver</button>
+    </div>
+
+    <script>
+        let reservas = [];
+
+        function mostrarFormulario(mesa) {
+            document.getElementById("mesaSeleccionada").textContent = mesa;
+            mostrarSeccion("formulario");
+        }
+
+        function confirmarReserva() {
+            let mesa = document.getElementById("mesaSeleccionada").textContent;
+            let nombre = document.getElementById("nombre").value;
+            let correo = document.getElementById("correo").value;
+            let fechaHora = document.getElementById("fechaHora").value;
+
+            if (nombre === "" || correo === "" || fechaHora === "") {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            let reserva = { mesa, nombre, correo, fechaHora, estado: "Pendiente" };
+            reservas.push(reserva);
+            actualizarReservas();
+            mostrarSeccion("confirmacion");
+        }
+
+        function actualizarReservas() {
+            let tabla = document.getElementById("tablaReservas");
+            tabla.innerHTML = "";
+
+            if (reservas.length === 0) {
+                tabla.innerHTML = "<tr><td colspan='6'>No hay reservas aún.</td></tr>";
+                return;
+            }
+
+            reservas.forEach((reserva, index) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>Mesa ${reserva.mesa}</td>
+                    <td>${reserva.nombre}</td>
+                    <td>${reserva.correo}</td>
+                    <td>${reserva.fechaHora}</td>
+                    <td class="${reserva.estado === 'Pendiente' ? 'pendiente' : 'confirmada'}">${reserva.estado}</td>
+                    <td><button class="boton-rojo" onclick="cancelarReserva(${index})">Cancelar</button></td>
+                `;
+                tabla.appendChild(tr);
+            });
+        }
+
+        function cancelarReserva(index) {
+            reservas.splice(index, 1);
+            actualizarReservas();
+        }
+
+        function volverReservaciones() {
+            mostrarSeccion("reservaciones");
+        }
+
+        function volverInicio() {
+            mostrarSeccion("");
+        }
+
+        function mostrarSeccion(seccion) {
+            document.getElementById("reservaciones").style.display = "none";
+            document.getElementById("formulario").style.display = "none";
+            document.getElementById("confirmacion").style.display = "none";
+            document.getElementById("admin").style.display = "none";
+
+            if (seccion) {
+                document.getElementById(seccion).style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>

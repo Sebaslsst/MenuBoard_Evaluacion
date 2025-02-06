@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from facturacionapp import views
-
+from inventario.views import filtrar_item
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,5 +34,8 @@ urlpatterns = [
     path('',views.inicio),
     path('guardar_item/', views.guardar_item, name='guardar_item'),
     path('guardar_item/<int:id>/', views.guardar_item, name='guardar_item'),
+    path('menu/',views.menu),
+    path('filtrar_item/', filtrar_item, name='filtrar_item'),
+    path('reservacion/',views.reservacion),
 
 ]

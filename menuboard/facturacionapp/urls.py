@@ -2,11 +2,13 @@ from django.urls import path
 
 from estadisticas import views
 from .views import *
-
+app_name = 'facturacion'
 urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
     path('success/<int:factura_id>/', payment_success, name='payment_success'),
     path('cancel/', payment_cancel, name='payment_cancel'),
-    path('index/',views.index)
+    path('index/',views.index),
+    path('',views.home, name='home'),
+
 ]
