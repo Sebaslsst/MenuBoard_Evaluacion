@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reservas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.unsplash.com/photo-1698265473208-ef2e5934e93c?fm=jpg&q=60&w=3000');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #fff;
+        }
+
+        .contenedor {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .boton {
+            background-color: #8B0000;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .boton-rojo { background-color: #d9534f; }
+        .boton-azul { background-color: #007bff; }
+
+        .mesa {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .disponible { color: #8B0000; }
+        .ocupada { color: red; }
+
+        .notificacion {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+        }
+
+        .exito { background-color: #28a745; }
+        .error { background-color: #dc3545; }
+    </style>
+</head>
+<body onload="cargarReservas()">
+
+    <div id="menuPrincipal" class="contenedor">
+        <h2>Bienvenido</h2>
+        <button class="boton" onclick="mostrarSeccion('reservaciones')">Cliente - Reservar Mesa</button>
+        <button class="boton" onclick="mostrarSeccion('misReservas')">Cliente - Mis Reservas</button>
+        <button class="boton" onclick="mostrarSeccion('admin')">Cliente - Eliminar Reservas</button>
+    </div>
+
+    <div id="reservaciones" class="contenedor" style="display: none;">
+        <h2>Reservación de Mesas</h2>
+        <div id="listaMesas">
+            <!-- Las mesas se generarán dinámicamente aquí -->
+        </div>
+        <button class="boton" onclick="mostrarSeccion('menuPrincipal')">Volver</button>
+    </div>
+
+    <div id="formulario" class="contenedor" style="display: none;">
+        <h2>Reservar Mesa <span id="mesaSeleccionada"></span></h2>
+        <input type="text" id="nombre" placeholder="Tu Nombre" required>
+        <input type="email" id="correo" placeholder="Tu Correo" required>
+        <input type="tel" id="telefono" placeholder="Tu Teléfono" required>
+        <input type="number" id="personas" placeholder="Número de Personas" min="1" required>
+        <input type="datetime-local" id="fechaHora" required>
+        <textarea id="notas" placeholder="Notas Adicionales (Opcional)"></textarea>
+        <button class="boton" onclick="confirmarReserva()">Confirmar Reserva</button>
+        <button class="boton" onclick="mostrarSeccion('reservaciones')">Volver</button>
+    </div>
+
+    <div id="misReservas" class="contenedor" style="display: none;">
+        <h2>Mis Reservas</h2>
+        <input type="email" id="buscarCorreo" placeholder="Ingresa tu correo para buscar reservas" required>
+        <button class="boton" onclick="buscarReservas()">Buscar</button>
+        <div id="listaMisReservas">
+            <!-- Las reservas del cliente se mostrarán aquí -->
+        </div>
+        <button class="boton" onclick="mostrarSeccion('menuPrincipal')">Volver</button>
+    </div>
+
+    <div id="editarReserva" class="contenedor" style="display: none;">
+        <h2>Editar Reserva</h2>
+        <input type="text" id="editarNombre" placeholder="Tu Nombre" required>
+        <input type="email" id="editarCorreo" placeholder="Tu Correo" required>
+        <input type="tel" id="editarTelefono" placeholder="Tu Teléfono" required>
+        <input type="number" id="editarPersonas" placeholder="Número de Personas" min="1" required>
+        <input type="datetime-local" id="editarFechaHora" required>
+        <textarea id="editarNotas" placeholder="Notas Adicionales (Opcional)"></textarea>
+        <button class="boton" onclick="guardarEdicion()">Guardar Cambios</button>
+        <button class="boton" onclick="mostrarSeccion('misReservas')">Volver</button>
+    </div>
+
+    <div id="admin" class="contenedor" style="display: none;">
+        <h2>Eliminar Reservas</h2>
+        <input type="email" id="buscarCorreoAdmin" placeholder="Ingresa tu correo para buscar reservas" required>
+        <button class="boton" onclick="buscarReservasAdmin()">Buscar</button>
+        <div id="listaReservasAdmin">
+            <!-- Las reservas del cliente se mostrarán aquí -->
+        </div>
+        <button class="boton" onclick="mostrarSeccion('menuPrincipal')">Volver</button>
+    </div>
+
+    <script>
+        let reservas = [];
+        let capacidadMesaSeleccionada = 0;
+        let reservaEditando = null; // Variable para almacenar la reserva que se está editando
+
+        const mesas = [
+            { numero: 1, capacidad: 4, estado: "disponible" },
+            { numero: 2, capacidad: 2, estado: "disponible" },
+            { numero: 3, capacidad: 6, estado: "disponible" },
+            { numero: 4, capacidad: 4, estado: "disponible" },
+            { numero: 5, capacidad: 8, estado: "disponible" },
+        ];
+
+        function cargarReservas() {
+            const datosGuardados = localStorage.getItem("reservas");
+            reservas = datosGuardados ? JSON.parse(datosGuardados) : [];
+            actualizarMesas();
+            actualizarReservas();
+        }
+
+        function mostrarFormulario(mesa) {
+            const mesaSeleccionada = mesas.find(m => m.numero === mesa);
+            if (mesaSeleccionada) {
+                document.getElementById("mesaSeleccionada").textContent = mesa;
+                capacidadMesaSeleccionada = mesaSeleccionada.capacidad;
+                mostrarSeccion("formulario");
+            }
+        }
+
+        function confirmarReserva() {
+            const nombre = document.getElementById("nombre").value;
+            const correo = document.getElementById("correo").value;
+            const telefono = document.getElementById("telefono").value;
+            const personas = parseInt(document.getElementById("personas").value);
+            const fechaHora = document.getElementById("fechaHora").value;
+            const notas = document.getElementById("notas").value;
+            const mesa = document.getElementById("mesaSeleccionada").textContent;
+
+            if (!nombre || !correo || !telefono || !personas || !fechaHora) {
+                mostrarNotificacion("Todos los campos son obligatorios.", "error");
+                return;
+            }
+
+            const fechaReserva = new Date(fechaHora);
+            const ahora = new Date();
+
+            if (fechaReserva <= ahora) {
+                mostrarNotificacion("Por favor, selecciona una fecha y hora futuras.", "error");
+                return;
+            }
+
+            if (personas > capacidadMesaSeleccionada) {
+                mostrarNotificacion(`La mesa seleccionada tiene una capacidad de ${capacidadMesaSeleccionada} personas. Por favor, elige una cantidad menor o igual.`, "error");
+                return;
+            }
+
+            reservas.push({ mesa, nombre, correo, telefono, personas, fechaHora, notas });
+            localStorage.setItem("reservas", JSON.stringify(reservas));
+
+            mostrarNotificacion("Reserva confirmada con éxito!", "exito");
+            actualizarMesas();
+            actualizarReservas();
+            mostrarSeccion("reservaciones");
+        }
+
+        function buscarReservas() {
+            const correo = document.getElementById("buscarCorreo").value;
+            const reservasCliente = reservas.filter(reserva => reserva.correo === correo);
+            const listaMisReservas = document.getElementById("listaMisReservas");
+
+            listaMisReservas.innerHTML = reservasCliente.length ? "" : "<p>No tienes reservas activas.</p>";
+
+            reservasCliente.forEach((reserva, index) => {
+                listaMisReservas.innerHTML += `
+                    <div class="mesa">
+                        <span>Mesa ${reserva.mesa} - ${reserva.nombre} (${reserva.personas} personas)</span>
+                        <span>${reserva.fechaHora}</span>
+                        <button class="boton boton-azul" onclick="editarReserva('${reserva.correo}', ${index})">Editar</button>
+                    </div>
+                `;
+            });
+        }
+
+        function editarReserva(correo, index) {
+            reservaEditando = { correo, index }; // Guardar la reserva que se está editando
+            const reserva = reservas.find(reserva => reserva.correo === correo);
+
+            document.getElementById("editarNombre").value = reserva.nombre;
+            document.getElementById("editarCorreo").value = reserva.correo;
+            document.getElementById("editarTelefono").value = reserva.telefono;
+            document.getElementById("editarPersonas").value = reserva.personas;
+            document.getElementById("editarFechaHora").value = reserva.fechaHora;
+            document.getElementById("editarNotas").value = reserva.notas;
+
+            mostrarSeccion("editarReserva");
+        }
+
+        function guardarEdicion() {
+            const nombre = document.getElementById("editarNombre").value;
+            const correo = document.getElementById("editarCorreo").value;
+            const telefono = document.getElementById("editarTelefono").value;
+            const personas = parseInt(document.getElementById("editarPersonas").value);
+            const fechaHora = document.getElementById("editarFechaHora").value;
+            const notas = document.getElementById("editarNotas").value;
+
+            if (!nombre || !correo || !telefono || !personas || !fechaHora) {
+                mostrarNotificacion("Todos los campos son obligatorios.", "error");
+                return;
+            }
+
+            const reserva = reservas[reservaEditando.index];
+            reserva.nombre = nombre;
+            reserva.correo = correo;
+            reserva.telefono = telefono;
+            reserva.personas = personas;
+            reserva.fechaHora = fechaHora;
+            reserva.notas = notas;
+
+            localStorage.setItem("reservas", JSON.stringify(reservas));
+            mostrarNotificacion("Reserva actualizada con éxito!", "exito");
+            mostrarSeccion("misReservas");
+            buscarReservas(); // Actualizar la lista de reservas
+        }
+
+        function buscarReservasAdmin() {
+            const correo = document.getElementById("buscarCorreoAdmin").value;
+            const reservasCliente = reservas.filter(reserva => reserva.correo === correo);
+            const listaReservasAdmin = document.getElementById("listaReservasAdmin");
+
+            listaReservasAdmin.innerHTML = reservasCliente.length ? "" : "<p>No tienes reservas activas.</p>";
+
+            reservasCliente.forEach((reserva, index) => {
+                listaReservasAdmin.innerHTML += `
+                    <div class="mesa">
+                        <span>Mesa ${reserva.mesa} - ${reserva.nombre} (${reserva.personas} personas)</span>
+                        <span>${reserva.fechaHora}</span>
+                        <button class="boton boton-rojo" onclick="eliminarReserva('${reserva.correo}', ${index})">Eliminar</button>
+                    </div>
+                `;
+            });
+        }
+
+        function eliminarReserva(correo, index) {
+            if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
+                reservas.splice(index, 1);
+                localStorage.setItem("reservas", JSON.stringify(reservas));
+                mostrarNotificacion("Reserva eliminada con éxito!", "exito");
+                buscarReservasAdmin(); // Actualizar la lista de reservas
+                actualizarMesas(); // Actualizar el estado de las mesas
+            }
+        }
+
+        function actualizarMesas() {
+            const listaMesas = document.getElementById("listaMesas");
+            listaMesas.innerHTML = "";
+
+            mesas.forEach(mesa => {
+                const reservada = reservas.some(reserva => reserva.mesa == mesa.numero);
+                const estado = reservada ? "Reservada" : "Disponible";
+                const claseEstado = reservada ? "ocupada" : "disponible";
+
+                listaMesas.innerHTML += `
+                    <div class="mesa">
+                        <span>Mesa ${mesa.numero} (Capacidad: ${mesa.capacidad})</span>
+                        <span class="${claseEstado}">${estado}</span>
+                        <button class="boton" onclick="mostrarFormulario(${mesa.numero})" ${reservada ? "disabled" : ""}>Reservar</button>
+                    </div>
+                `;
+            });
+        }
+
+        function actualizarReservas() {
+            const lista = document.getElementById("listaReservas");
+            lista.innerHTML = reservas.length ? "" : "<p>No hay reservas aún.</p>";
+
+            reservas.forEach((reserva, index) => {
+                lista.innerHTML += `
+                    <div class="mesa">
+                        <span>Mesa ${reserva.mesa} - ${reserva.nombre} (${reserva.personas} personas)</span>
+                        <span>${reserva.fechaHora}</span>
+                        <button class="boton boton-rojo" onclick="cancelarReserva(${index})">Cancelar</button>
+                    </div>
+                `;
+            });
+        }
+
+        function cancelarReserva(index) {
+            reservas.splice(index, 1);
+            localStorage.setItem("reservas", JSON.stringify(reservas));
+            mostrarNotificacion("Reserva cancelada con éxito!", "exito");
+            actualizarMesas();
+            actualizarReservas();
+        }
+
+        function mostrarSeccion(seccion) {
+            document.querySelectorAll(".contenedor").forEach(el => el.style.display = "none");
+            document.getElementById(seccion).style.display = "block";
+        }
+
+        function mostrarNotificacion(mensaje, tipo = "exito") {
+            const notificacion = document.createElement("div");
+            notificacion.className = `notificacion ${tipo}`;
+            notificacion.textContent = mensaje;
+            document.body.appendChild(notificacion);
+
+            setTimeout(() => {
+                notificacion.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

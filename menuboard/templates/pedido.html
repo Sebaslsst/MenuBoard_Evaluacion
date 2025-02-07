@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/736x/d9/8f/8d/d98f8d22fee4d702d612656af3f56726.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla Inicial -->
+        <div id="pantallaInicial">
+            <h1 class="text-center">Gestión de Pedidos</h1>
+            <button class="btn btn-primary w-100 mb-2" onclick="mostrarPantalla('agendarPedido')">Agendar Pedido</button>
+            <button class="btn btn-secondary w-100" onclick="mostrarPantalla('consultarPedidos')">Consultar Pedidos</button>
+        </div>
+
+        <!-- Pantalla de Agendar Pedido -->
+        <div id="agendarPedido" class="hidden">
+            <h2 class="text-center">Nuevo Pedido</h2>
+            <form id="pedidoForm">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del Cliente</label>
+                    <input type="text" class="form-control" id="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tipoPedido" class="form-label">Tipo de Pedido</label>
+                    <select class="form-select" id="tipoPedido" required onchange="toggleOpciones()">
+                        <option value="comer">Comer en el restaurante</option>
+                        <option value="llevar">Para llevar</option>
+                        <option value="entrega">Entrega a domicilio</option>
+                    </select>
+                </div>
+                <div id="direccionContainer" class="mb-3 hidden">
+                    <label for="direccion" class="form-label">Dirección de Entrega</label>
+                    <input type="text" class="form-control" id="direccion">
+                </div>
+                <div id="fechaHoraContainer" class="hidden">
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hora" class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="hora">
+                    </div>
+                </div>
+                <div id="comidasContainer">
+                    <h4>Pedido de Comida</h4>
+                    <div class="comida-item mb-3">
+                        <input type="text" class="form-control mb-2" placeholder="Nombre de la comida" required>
+                        <input type="number" class="form-control" placeholder="Cantidad" min="1" required>
+                        <button type="button" class="btn btn-danger mt-2" onclick="eliminarComida(this)">Eliminar</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary mb-3" onclick="agregarComida()">Agregar otra comida</button>
+                <button type="button" class="btn btn-primary w-100" onclick="revisarPedido()">Revisar Pedido</button>
+                <button type="button" class="btn btn-danger w-100 mt-2" onclick="mostrarPantalla('pantallaInicial')">Cancelar</button>
+            </form>
+        </div>
+
+        <!-- Pantalla de Revisión -->
+        <div id="revisionPedido" class="hidden">
+            <h2 class="text-center">Revisión del Pedido</h2>
+            <p id="detallePedido"></p>
+            <button class="btn btn-success w-100" onclick="confirmarPedido()">Confirmar Pedido</button>
+            <button class="btn btn-warning w-100 mt-2" onclick="mostrarPantalla('agendarPedido')">Volver</button>
+        </div>
+
+        <!-- Pantalla de Consultar Pedidos -->
+        <div id="consultarPedidos" class="hidden">
+            <h2 class="text-center">Mis Pedidos</h2>
+            <ul id="listaPedidos" class="list-group"></ul>
+            <button class="btn btn-primary w-100 mt-3" onclick="mostrarPantalla('pantallaInicial')">Volver</button>
+        </div>
+    </div>
+
+    <script>
+        var pedidos = Array.isArray(pedidos) ? pedidos : [];
+
+        function mostrarPantalla(pantalla) {
+            document.getElementById('pantallaInicial').classList.add('hidden');
+            document.getElementById('agendarPedido').classList.add('hidden');
+            document.getElementById('revisionPedido').classList.add('hidden');
+            document.getElementById('consultarPedidos').classList.add('hidden');
+            document.getElementById(pantalla).classList.remove('hidden');
+            if (pantalla === 'consultarPedidos') mostrarPedidos();
+        }
+
+        function toggleOpciones() {
+            let tipoPedido = document.getElementById('tipoPedido').value;
+            document.getElementById('fechaHoraContainer').classList.toggle('hidden', tipoPedido !== 'entrega');
+            document.getElementById('direccionContainer').classList.toggle('hidden', tipoPedido !== 'entrega');
+        }
+
+        function agregarComida() {
+            let container = document.getElementById('comidasContainer');
+            let div = document.createElement('div');
+            div.classList.add('comida-item', 'mb-3');
+            div.innerHTML = `
+                <input type="text" class="form-control mb-2" placeholder="Nombre de la comida" required>
+                <input type="number" class="form-control" placeholder="Cantidad" min="1" required>
+                <button type="button" class="btn btn-danger mt-2" onclick="eliminarComida(this)">Eliminar</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function eliminarComida(button) {
+            button.parentElement.remove();
+        }
+
+        function revisarPedido() {
+            let nombre = document.getElementById('nombre').value.trim();
+            let tipoPedido = document.getElementById('tipoPedido').value.trim();
+            let direccion = document.getElementById('direccion').value.trim();
+            let fecha = document.getElementById('fecha').value.trim();
+            let hora = document.getElementById('hora').value.trim();
+            if (!nombre || !tipoPedido) {
+                alert("Por favor complete los campos obligatorios (Nombre y Tipo de Pedido).");
+                return;
+            }
+
+            let comidas = Array.from(document.querySelectorAll('.comida-item')).map(item =>
+                `${item.children[0].value} (${item.children[1].value})`
+            ).join(', ');
+
+            // Mostrar la dirección solo si el tipo de pedido es 'entrega'
+            let detalles = `Cliente: ${nombre}<br>Tipo: ${tipoPedido}<br>`;
+            if (tipoPedido === 'entrega') {
+                detalles += `Dirección: ${direccion}<br>Fecha y Hora: ${fecha} ${hora}<br>`;
+            }
+            detalles += `Comidas: ${comidas}`;
+
+            document.getElementById('detallePedido').innerHTML = detalles;
+            mostrarPantalla('revisionPedido');
+        }
+
+        function confirmarPedido() {
+            let nombre = document.getElementById('nombre').value;
+            let tipoPedido = document.getElementById('tipoPedido').value;
+            let direccion = document.getElementById('direccion').value;
+            let fecha = document.getElementById('fecha').value;
+            let hora = document.getElementById('hora').value;
+            let comidas = Array.from(document.querySelectorAll('.comida-item')).map(item =>
+                `${item.children[0].value} (${item.children[1].value})`
+            ).join(', ');
+
+            if (!nombre || !tipoPedido) {
+                alert("Por favor complete los campos obligatorios (Nombre y Tipo de Pedido).");
+                return;
+            }
+            // Guardar el pedido
+            let pedido = {
+                nombre: nombre,
+                tipoPedido: tipoPedido,
+                direccion: tipoPedido === 'entrega' ? direccion : '',
+                fecha: tipoPedido === 'entrega' ? `${fecha} ${hora}` : '',
+                comidas: comidas
+            };
+            pedidos.push(pedido);
+            alert("Pedido confirmado 🎉");
+            mostrarPantalla('pantallaInicial');
+        }
+
+        function mostrarPedidos() {
+            let listaPedidos = document.getElementById('listaPedidos');
+            listaPedidos.innerHTML = ''; // Limpiar lista
+
+            pedidos.forEach(pedido => {
+                let item = document.createElement('li');
+                item.classList.add('list-group-item');
+                item.innerHTML = `Cliente: ${pedido.nombre} - Tipo: ${pedido.tipoPedido} - Comidas: ${pedido.comidas}${pedido.direccion ? ' - Dirección: ' + pedido.direccion : ''}`;
+                listaPedidos.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inventario Mejorado</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap/bootstrap.bundle.css' %}">
+
+    <!-- Iconos y estilos adicionales -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/themify-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/pigga.css' %}">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    <style>
+        /* Estilos adicionales en línea para garantizar carga */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .header-mini {
+            color: white;
+            padding: 40px;
+            text-align: center;
+            background-size: cover;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .btn {
+            border-radius: 4px;
+        }
+
+        #formulario {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header class="header header-mini" style="background-image: url('{% static 'assets/img/inventory-bg.jpg' %}');">
+        <div class="header-title">Inventario</div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Inventario</li>
+            </ol>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <h3 class="text-center">Inventario</h3>
+        <hr>
+
+        <button class="btn btn-success mb-3" onclick="mostrarFormulario()">Agregar Nuevo Insumo</button>
+
+        <!-- Filtro por Tipo de Insumo -->
+        <div class="mb-3">
+            <label for="tipoFiltro">Filtrar por Tipo:</label>
+            <select id="tipoFiltro" name="tipo" class="form-control" onchange="filtrarInsumos()">
+                <option value="">Todos</option>
+                <option value="Vegetal">Vegetal</option>
+                <option value="Carne">Carne</option>
+                <option value="Grano">Grano</option>
+            </select>
+        </div>
+
+        <!-- Formulario para Agregar/Editar Insumos -->
+        <div id="formulario" style="display: none;">
+            <h5>Agregar/Editar Insumo</h5>
+            <form id="formInsumo">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <input type="text" class="form-control" id="tipo" name="tipo" required>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                </div>
+                <div class="form-group">
+                    <label for="caducidad">Fecha de Caducidad</label>
+                    <input type="date" class="form-control" id="caducidad" name="caducidad" required>
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="guardarInsumo()">Guardar</button>
+            </form>
+            <hr>
+        </div>
+
+        <!-- Tabla de Inventario con opción de edición -->
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Fecha de Caducidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInsumos">
+                <!-- Los insumos se cargarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/vendors/jquery/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'assets/vendors/bootstrap/bootstrap.bundle.js' %}"></script>
+    <script>
+        function mostrarFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+
+        function guardarInsumo() {
+            const nombre = document.getElementById('nombre').value;
+            const tipo = document.getElementById('tipo').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const caducidad = document.getElementById('caducidad').value;
+            const precio = document.getElementById('precio').value;
+
+            const insumo = {
+                id: Date.now(), // Usamos la fecha actual como ID único
+                nombre,
+                tipo,
+                cantidad,
+                caducidad,
+                precio
+            };
+
+            let insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+            insumos.push(insumo);
+            localStorage.setItem('insumos', JSON.stringify(insumos));
+
+            cargarInsumos();
+            document.getElementById('formInsumo').reset();
+            document.getElementById('formulario').style.display = 'none';
+        }
+
+        function cargarInsumos() {
+            const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+            const tablaInsumos = document.getElementById('tablaInsumos');
+            tablaInsumos.innerHTML = '';
+
+            insumos.forEach(insumo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${insumo.id}</th>
+                    <td>${insumo.nombre}</td>
+                    <td>${insumo.tipo}</td>
+                    <td>${insumo.cantidad}</td>
+                    <td>${insumo.caducidad}</td>
+                    <td>${insumo.precio}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="eliminarInsumo(${insumo.id})">Eliminar</button>
+                    </td>
+                `;
+                tablaInsumos.appendChild(row);
+            });
+        }
+
+        function eliminarInsumo(id) {
+            let insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+            insumos = insumos.filter(insumo => insumo.id !== id);
+            localStorage.setItem('insumos', JSON.stringify(insumos));
+            cargarInsumos();
+        }
+
+        function filtrarInsumos() {
+            const tipoFiltro = document.getElementById('tipoFiltro').value;
+            const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+            const tablaInsumos = document.getElementById('tablaInsumos');
+            tablaInsumos.innerHTML = '';
+
+            const insumosFiltrados = tipoFiltro ? insumos.filter(insumo => insumo.tipo === tipoFiltro) : insumos;
+
+            insumosFiltrados.forEach(insumo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${insumo.id}</th>
+                    <td>${insumo.nombre}</td>
+                    <td>${insumo.tipo}</td>
+                    <td>${insumo.cantidad}</td>
+                    <td>${insumo.caducidad}</td>
+                    <td>${insumo.precio}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="eliminarInsumo(${insumo.id})">Eliminar</button>
+                    </td>
+                `;
+                tablaInsumos.appendChild(row);
+            });
+        }
+
+        // Cargar los insumos al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarInsumos);
+    </script>
+</body>
+</html>
