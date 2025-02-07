@@ -53,9 +53,9 @@ El módulo de pedidos permite gestionar los pedidos de los clientes, desde que s
 
 ![Captura de Pantalla 2025-02-06 a la(s) 22 25 20](https://github.com/user-attachments/assets/4581139f-9722-4c04-852b-a90172ae2428)
 
-#Interfaz Grafica del Usuario
+# Interfaz Grafica del Usuario
 
-Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tiene diferentes cuestiones, ya que aplica 
+### Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tiene diferentes cuestiones, ya que aplica: 
 - Formularios (Para registro y inicio de sesion)
 
   ![Captura de Pantalla 2025-02-06 a la(s) 23 34 07](https://github.com/user-attachments/assets/354dc56b-1e03-4e24-85fa-ecc99643c5f7)
@@ -69,9 +69,5 @@ Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tie
 ![WhatsApp Image 2025-02-07 at 00 03 37](https://github.com/user-attachments/assets/3bbef64b-c0c4-4ff0-ae20-c4c1ac97b185)
 
 
-# APIS A UTILIZAR EN EL MENUBOARD
 
-# Reflexión 
-La elaboración de el proyecto general, fue una motivación para nosotros como grupo, por que nos ayudo a entender lo básico de una creación de página web, desde lo que es la creación del diagrama de clase, la códificación de cada clase a java, la codificación a python para la implementación de DJANGO el cual en esta ultima unidad se ha venido trabajando arduamente para crear la página principal en HTML.
-Esto ayuda mucho a entender lo escencial de la programación orientada a objetos, el como se implemento la base de datos de SQLite para el almacen de datos ingresados sean usuarios, pedidos, alertas, reservaciones, etc.
-También nos ayudo a poder trabajar en grupo el cuál al inicio fue complicado, pero poco a poco se logro interactuar de la mejor manera sin dejar de lado el compañerismo.
+
