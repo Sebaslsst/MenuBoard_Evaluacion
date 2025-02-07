@@ -1,5 +1,5 @@
+# Programación Orientada a Objetos - Evaluación Unidad 3
 # Grupo 5
-# Programación Orientada a Objetos.
 Este repositorio contiene la Evaluación Final de Programación Orientada a Objetos.
 # Docente de la materia:
 Ing. Edison Coronel.
@@ -14,111 +14,62 @@ Ing. Edison Coronel.
   leonardo.sanchez@unl.edu.ec
 - Luis Blacio.
   luis.blacio@unl.edu.ec
-# Descripción 
-El siguiente diagrama de clases continen los siguientes requerimientos:
-- Registrar todos los insumos del restaurante, con información como nombre, cantidad, unidad de medida y nivel de reorden.
-- Permitir registrar entradas al inventario (compras de insumos) y salidas del inventario (uso de insumos).
-- Actualizar en tiempo real la cantidad disponible de cada insumo según el uso en los pedidos.
-- Generar alertas automáticas cuando la cantidad de un insumo está por debajo del nivel de reorden.
-- Generar reportes sobre el consumo de insumos en un período determinado, permitiendo identificar los más utilizados.
-- Mantener un historial de las entradas y salidas para fines de auditoría y control.
+  
+# Modulos que se emplearon dentro del proyecto
+
+## Modulos de Mesas y Reservaciones
+Este módulo gestiona la disponibilidad y uso de las mesas dentro del restaurante. Las mesas pueden estar en diferentes estados, tales como libre, ocupada o reservada. Los clientes pueden hacer reservaciones de mesas con antelación, especificando la fecha y hora de la reserva. Es necesario gestionar las características de cada mesa, como el número de asientos y su ubicación en el restaurante. Cuando un cliente llega, una mesa puede ser asignada, y al finalizar su uso, la mesa debe ser liberada para otros clientes. Las reservaciones pueden ser modificadas o canceladas por el cliente o el personal del restaurante.
+
+![Captura de Pantalla 2025-02-06 a la(s) 22 18 35](https://github.com/user-attachments/assets/5836db12-3c08-4a56-b57f-2fd0efaeca21)
 
 
-# Diagrama Visual Paradimg 
 
-![Captura de pantalla 2024-11-26 090338](https://github.com/user-attachments/assets/c7749dbe-1b60-4093-b966-77a0b0499ded)
+## Modulo de Reporte y Estadistica 
+Este módulo proporciona información sobre el desempeño del restaurante a través de reportes y estadísticas. Los reportes incluyen datos sobre las ventas diarias, productos más vendidos, mesas más utilizadas, ingresos generados, y el desempeño de los empleados. El sistema debe permitir generar reportes personalizados por rango de fechas y categorías específicas, como ventas por categoría de producto o por empleado. Además, se deben generar gráficos y tablas que faciliten la interpretación de los datos.
 
-
-*Link del diagrama para ver más claro*
-
-https://drive.google.com/file/d/1WnKVkikT2FHkUT9_u0Pv7kQjc8qsrlUT/view?usp=sharing
-
-# APIS A UTILIZAR EN EL MENUBOARD
-- Api para delibery de dos funciones " PICKER "  https://www.pickerexpress.com/es/desarrollador/documentacion-api-delivery
-- Api para pago con tarjetas de credito y facturación " RAMPAGO " https://rapidapi.com/RampagoHub/api/rampago-seamless-fiat-to-usdc-fiat-ramp
-
-#  API PICKER 
-La API Picker es una interfaz utilizada en aplicaciones web para permitir a los usuarios seleccionar archivos de su dispositivo o de servicios en la nube de manera eficiente.
+![Captura de Pantalla 2025-02-06 a la(s) 22 13 28](https://github.com/user-attachments/assets/0310ed90-8fc9-4ef1-a60e-cde8e357f347)
 
 
-Picker te permitirá conectar tus plataformas y/o comercios a distintos proveedores de delivery de la región en la que te encuentras. La integración con Picker a través de su API te ofrece las siguientes capacidades:
+## Modulo de Menus y productos
+Este módulo permite gestionar los productos y platos que se ofrecen en el restaurante. Cada producto tiene atributos como nombre, descripción, categoría, precio y disponibilidad. El menú puede estar organizado en categorías, como entradas, platos principales, postres y bebidas. El sistema debe permitir agregar nuevos productos al menú, modificarlos o eliminarlos cuando sea necesario. Además, se requiere que los productos puedan estar temporalmente fuera de stock o deshabilitados para su venta si los ingredientes no están disponibles. También se debe mantener un control de precios, permitiendo actualizarlos según sea necesario.
 
-- Administración de locales.
-- Automatizar la creación de pedidos desde tu plataforma.
-- Realizar consultas de tarifas.
-- Recibir en tiempo real las actualizaciones de tu pedido.
-
- Funciona en 2 partes, es decir 2 APIS en una sola, que se pueden usar y combinar a la vez:
- - Primera parte para crear un pedido
- - La segunda parte para calcuar el costo de entraga por pedido
-# Crear un pedido
-Para entender un poco la lógica que maneja Picker, una cuenta se la denomina Empresa. Cada empresa puede tener N locales (que pueden representar tiendas, restaurantes, puntos de despacho). Cada local obligatoriamente debe estar referenciado con una dirección y una geolocalización (se las requiere al momento de crearlas). Por ejemplo: Si tu empresa va a manejar 2 sucursales, deberás crear 2 locales, Todo pedido creado en la plataforma de Picker es determinado por un estado. El estado de un pedido es una parte importante del ciclo de vida del mismo. Estos estados pueden indicar si el pedido esta terminado, cancelado o aun en proceso. Es importante que en la integración que se vaya a desarrollar se mapeen todos los estados posibles, para que el cliente tenga muy claro lo que significa cada estado.
-
-## Estados de Pedido
-
-### ON_HOLD: 
-Es el estado inicial del pedido si existe un tiempo de preparación. Durante este estado, el pedido aún no busca conductor. Pasa automáticamente a READY_FOR_PICKUP si:
-- Se cumple el tiempo de preparación o cooktime.
-- Se activa manualmente la búsqueda desde dashboard.
-- Se activa mediante el endpoint de Start Search.
+![Captura de Pantalla 2025-02-06 a la(s) 22 24 30](https://github.com/user-attachments/assets/503fcb3a-dfdb-4b9d-bc5e-784a0ccdadfe)
 
 
-### READY_FOR_PICKUP
+## Modulo de inventario
+El módulo de inventario permite gestionar los insumos y productos necesarios para la preparación de los platos del restaurante. Cada insumo debe ser registrado con información como nombre, cantidad disponible y unidad de medida. El sistema debe permitir registrar entradas de nuevos insumos y salidas de los mismos cuando se utilizan en la preparación de los productos del menú. Además, es necesario generar alertas cuando el inventario de un insumo esté bajo o agotado. También debe permitir generar reportes de consumo de insumos y de stock disponible para facilitar la reposición.
 
-En este estado se inicia la búsqueda de motorizados en los distintos proveedores activados para el local. Este estado se puede disparar en los siguientes escenarios.
-
-- Se termina tiempo de preparación de pedido en ON_HOLD
-- Se inicia una búsqueda manualmente
-- Si un pedido ya con conductor ejecuta una nueva búsqueda de conductores. (Por ejemplo: Pedido en ACCEPTED con conductor vuelve a READY_FOR_PICKUP).
-- Si el pedido se crea sin tiempo de preparación, será el estado inicial del pedido.
-   
-### ACCEPTED
-Este estado se guarda en el pedido al momento que un proveedor asigna un motorizado al pedido. Este estado únicamente llega por medio del webhook de DRIVER_ASSIGNED 
-
-### ARRIVED_AT_PICKUP
-Cuando el conductor notifica que el conductor llego al local y esta esperando que local le entregue el pedido
-
-### WAY_TO_DELIVER
-Cuando el conductor indica que abandono el local y va en dirección al punto de entrega
-
-### ARRIVED_AT_DELIVERY
-Cuando el conductor llega donde el cliente y esta por terminar el pedido
-
-### COMPLETED
-Pedido fue completado satisfactoriamente
-
-### PROVIDER_NOT_FOUND
-Cuando ningún proveedor activado para tu local no puede atender tu pedido. No se ejecuta ninguna búsqueda
-
-### CANCELLED_BY_BUSINESS
-Negocio dispara la cancelación del pedido. Esto puede suceder cuando:
-
-- Pedido es cancelado desde dashboard
-- Pedido es cancelado vía API por medio del endpoint de Cancel Booking
-
-### CANCELLED_BY_ADMIN
-Cuando la cancelación es disparada por el área de Soporte de Picker
-
-### CANCELLED_BY_DELIVERY_PROVIDER
-Cuando la cancelación es disparada por el proveedor de delivery
+![Captura de Pantalla 2025-02-06 a la(s) 22 21 39](https://github.com/user-attachments/assets/a6fec96f-4beb-4f6a-a11c-a7668357c73a)
 
 
-### NOT_DELIVERED
-Cuando el pedido no pudo ser entregado al cliente; y el paquete de entrega no puede ser devuelto al negocio
+## Modulo de Facturación y Pagos 
+Este módulo es responsable de generar la factura para los clientes al finalizar su pedido. La factura debe calcular automáticamente el total del pedido, incluyendo impuestos y descuentos aplicables. Además, debe permitir seleccionar el método de pago, ya sea en efectivo, tarjeta de crédito o débito, entre otros. El sistema debe generar un comprobante de pago que puede ser impreso o enviado al correo del cliente. También es necesario mantener un registro de todas las facturas emitidas para efectos contables y de auditoría.
+
+![Captura de Pantalla 2025-02-06 a la(s) 22 16 06](https://github.com/user-attachments/assets/a1f98f40-3366-4c20-a341-90bd463b8117)
 
 
-### RETURNING
-Cuando el pedido no pudo ser entregado al cliente y el pedido esta en camino a ser retornado al negocio
+## Modulo de pedidos 
+El módulo de pedidos permite gestionar los pedidos de los clientes, desde que se realiza el pedido hasta que es servido y pagado. Cada pedido puede contener uno o más productos del menú, y es posible agregar o eliminar productos mientras el pedido no haya sido servido. El sistema debe permitir modificar cantidades de productos en los pedidos, así como su estado (pendiente, en preparación, servido, pagado). El personal del restaurante puede visualizar y actualizar el estado de cada pedido. Además, se requiere tener un registro histórico de todos los pedidos realizados en el restaurante para futuras consultas.
 
-### RETURNED
-Cuando el pedido fue retornado exitosamente al negocio
+![Captura de Pantalla 2025-02-06 a la(s) 22 25 20](https://github.com/user-attachments/assets/4581139f-9722-4c04-852b-a90172ae2428)
 
-# Costo de Pedido
-El endpoint de Pre Checkout te permitirá consultar precios y valores del pedido que necesites realizar. Además de eso, te indicará si es posible que podamos atender tu pedido (si el pedido cubre una distancia muy larga entre el local y el punto de entrega; o el punto de entrega esta fuera de cobertura, devolveremos un mensaje de error).
+# Interfaz Grafica del Usuario
+En esta parte nosotros implementamos esta interfaz grafica del usuario, mediante templates, donde previamente en la Unidad 1 y 2 planificamos lo que es el diagrama UML, despues de su revisión, se comenzo a codificar las clases para que se implemente la logica del diagrma de clases tipo UML, y por ultimo se añadieron los templates donde hacemos funcionar los diferentes atributos aplicados a una pagina Web
 
-Para este endpoint es obligatorio la locación del punto de entrega. La ubicación del local ya la obtenemos automáticamente por el Api Key del negocio que usas en la autorización.
+### Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tiene diferentes cuestiones, ya que aplica: 
+- Formularios (Para registro y inicio de sesion)
+
+  ![Captura de Pantalla 2025-02-06 a la(s) 23 34 07](https://github.com/user-attachments/assets/354dc56b-1e03-4e24-85fa-ecc99643c5f7)
+
+- Botones (Revisar Menu, Reservar mesas, Pedidos)
+
+![Captura de Pantalla 2025-02-06 a la(s) 23 34 51](https://github.com/user-attachments/assets/64ddeaa8-8d2e-4535-bb11-0a2d73c56272)
+
+
+- Menu (Para inventario, para añadir un insumo )
+![WhatsApp Image 2025-02-07 at 00 03 37](https://github.com/user-attachments/assets/3bbef64b-c0c4-4ff0-ae20-c4c1ac97b185)
 
 # Reflexión 
-La elaboración de el proyecto general, fue una motivación para nosotros como grupo, por que nos ayudo a entender lo básico de una creación de página web, desde lo que es la creación del diagrama de clase, la códificación de cada clase a java, la codificación a python para la implementación de DJANGO el cual en esta ultima unidad se ha venido trabajando arduamente para crear la página principal en HTML.
-Esto ayuda mucho a entender lo escencial de la programación orientada a objetos, el como se implemento la base de datos de SQLite para el almacen de datos ingresados sean usuarios, pedidos, alertas, reservaciones, etc.
-También nos ayudo a poder trabajar en grupo el cuál al inicio fue complicado, pero poco a poco se logro interactuar de la mejor manera sin dejar de lado el compañerismo.
+
+Lo primero que se realizo en este caso fue configurar en parte las bases de la interfaz grafica, como definir los colores base y escoger detalladamente que templates vamos a utilizar para llevar a cabo nuestro proyecto, luego fue implementar la logica de las clases de la segunda unidad a los templates HTML, y la configuración basica de la interfaz de usuario, se opto por mejorar los templates, generando formularios como para el inicio de sesion o registro, luego se opto por tambien implementar botones que rediriguen las Urls, y por ultimo tambien se implemento menus, sobre todo para la parte de insumos del inventario , aparte de diferentes funcionalidades en si, puesto que la aplicación que queremos entregar o presentar sea muy completa, despues de todo ese proceso llegamos a la parte de las APIS, donde primero se penso en implementar la API de picker que era una APi para servicio de Delibery, pero por temas de autentificación no se pudo lograr, luego se optmo por un sistema de facturación llamado Stripe, que tampoco se implemento dedibo a un problema con la autentificación tambien, por ultimo se optmo por utilizar la Api de google maps, donde se pudo implementar como un medio para que el cliente sepa la posicicón o ubicación del restaurante, y calcula la manera mas rapida de llegar, tambien se implemento una API de contacto, puesto que se pudo añadir un boton que atraves de un API que funciona con datos en la Nube, se implemento el numero de WhatsApp de los administradores del restaurante, asi el usuario tendria mas formas de interacción dentro de la pagina, luego tuvimos problemas con la base de datos y como solución mediante la investigación fue aplicar un API que tome en cuenta las funciones de la base de datos MSQL Lite, se pudo crear una simultanea base de datos donde se guardan en el mismo archivo del proyecto los datos de los usuarios, al final se volvio a configurar los templates dandoles otra forma mas sofisticada y mas formal.
+
