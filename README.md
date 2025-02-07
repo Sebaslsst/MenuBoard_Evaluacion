@@ -53,6 +53,22 @@ El módulo de pedidos permite gestionar los pedidos de los clientes, desde que s
 
 ![Captura de Pantalla 2025-02-06 a la(s) 22 25 20](https://github.com/user-attachments/assets/4581139f-9722-4c04-852b-a90172ae2428)
 
+#Interfaz Grafica del Usuario
+
+Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tiene diferentes cuestiones, ya que aplica 
+- Formularios (Para registro y inicio de sesion)
+
+  ![Captura de Pantalla 2025-02-06 a la(s) 23 34 07](https://github.com/user-attachments/assets/354dc56b-1e03-4e24-85fa-ecc99643c5f7)
+
+- Botones (Revisar Menu, Reservar mesas, Pedidos)
+
+![Captura de Pantalla 2025-02-06 a la(s) 23 34 44](https://github.com/user-attachments/assets/791a822b-1f48-43f7-b20f-55ee1ca05a34)
+
+![Captura de Pantalla 2025-02-06 a la(s) 23 34 51](https://github.com/user-attachments/assets/1d79a34c-1613-4b24-8719-5f1aabe37126)
+
+- Menu (Para inventario, para añadir un insumo )
+![WhatsApp Image 2025-02-07 at 00 03 37](https://github.com/user-attachments/assets/3bbef64b-c0c4-4ff0-ae20-c4c1ac97b185)
+
 
 # APIS A UTILIZAR EN EL MENUBOARD
 
