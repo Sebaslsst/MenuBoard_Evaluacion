@@ -33,7 +33,19 @@ Despues de diversos inconvenientes con las anteriores APIS a aplicar, se aplico 
 ### Limitaciones:
 - Dependencia total de la nube; si el servicio se cae, afecta el funcionamiento.
 - Puede tener restricciones de uso y costos según el plan elegido.
-
+## API de Google Maps
+### Funcionalidades:
+- Muestra mapas interactivos en aplicaciones web y móviles.
+- Proporciona direcciones, cálculos de rutas y tráfico en tiempo real.
+- Permite la búsqueda y autocompletado de lugares con Google Places API.
+### Requisitos:
+- Cuenta en Google Cloud Platform.
+- Clave de API con permisos configurados.
+- Configuración de facturación para acceder a niveles de uso gratuito y pagos.
+### Limitaciones:
+- Modelo de pago por uso: puede ser costoso en aplicaciones con alto tráfico.
+- Restricciones en la cantidad de solicitudes por segundo según el plan.
+- Necesidad de cumplir con los términos de uso de Google, lo que impide almacenar datos localmente sin permisos específicos.
 # PROPUESTA 
 
 # Implementación
