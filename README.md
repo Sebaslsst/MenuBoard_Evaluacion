@@ -54,6 +54,7 @@ El módulo de pedidos permite gestionar los pedidos de los clientes, desde que s
 ![Captura de Pantalla 2025-02-06 a la(s) 22 25 20](https://github.com/user-attachments/assets/4581139f-9722-4c04-852b-a90172ae2428)
 
 # Interfaz Grafica del Usuario
+En esta parte nosotros implementamos esta interfaz grafica del usuario, mediante templates, donde previamente en la Unidad 1 y 2 planificamos lo que es el diagrama UML, despues de su revisión, se comenzo a codificar las clases para que se implemente la logica del diagrma de clases tipo UML, y por ultimo se añadieron los templates donde hacemos funcionar los diferentes atributos aplicados a una pagina Web
 
 ### Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tiene diferentes cuestiones, ya que aplica: 
 - Formularios (Para registro y inicio de sesion)
