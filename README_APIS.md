@@ -46,7 +46,18 @@ Despues de diversos inconvenientes con las anteriores APIS a aplicar, se aplico 
 - Modelo de pago por uso: puede ser costoso en aplicaciones con alto tráfico.
 - Restricciones en la cantidad de solicitudes por segundo según el plan.
 - Necesidad de cumplir con los términos de uso de Google, lo que impide almacenar datos localmente sin permisos específicos.
+##  API localStorage
+### Funcionalidades:
+- Permite almacenar datos en el navegador del usuario en pares clave-valor.
+- Los datos persisten incluso después de cerrar y reabrir el navegador.
+- Funciona sin necesidad de servidores ni bases de datos externas.
+### Requisitos:
+- Aplicación web que ejecute JavaScript.
+- Acceso al objeto window.localStorage.
+- No necesita conexión a internet, ya que el almacenamiento es local.
+### Limitaciones:
+- Capacidad de almacenamiento limitada 
 # PROPUESTA 
-
+En primer lugar, incorporaremos la API de Google Maps, lo que permitirá a los clientes localizar fácilmente el restaurante, visualizar su ubicación en un mapa interactivo y calcular la mejor ruta para llegar desde su posición actual. Además, en caso de contar con varias sucursales, se podrán mostrar todas en un solo mapa, facilitando la elección del punto más cercano. Por otro lado, para agilizar la comunicación y mejorar la atención al cliente, implementaremos la API de W.App, que permitirá a los usuarios realizar pedidos, reservas o consultas directamente a través de WhatsApp. Esta integración ofrecerá una comunicación más fluida y rápida, asegurando que los clientes puedan resolver sus dudas o gestionar sus pedidos de manera sencilla. Asimismo, se podrá automatizar la respuesta a preguntas frecuentes mediante un chatbot, optimizando la interacción sin requerir intervención humana constante y por ultimo vamos a utilizar el API de localStorage la cual implementamos con el fin de que actue como un tipo de base de datos, ya que esta utiliza algunas funcionalidades de la base de datos predeterminada de Pycharm es decir SQL Lite, esta nos sirve para la autentificación del usuario al momento de que se registre e inicie sesión 
 # Implementación
 
