@@ -5,9 +5,13 @@ Es una parte de la Web Storage API, cuya función permite almacenar información
 ## ¿Por qué elegimos LocalStorage?
 LocalStorage representa mucha facilidad para la implementación y conservación de datos(parte fundamental para cualquier programa en muchas de las funciones) gracias a su facilidad de almacenar datos simples como arreglos de datos que se pueden conservar de manera indefinida aun cuando se presentan ciertos inconvenientes que obliguen al usuario a abandonar la página, siendo su función similar a la de una base de datos, con algunas limitaciones y restricciones, pero que a conveniencia no presentan problema alguno en el almacenamiento de información para el proyecto propuesto, por si fuera poco, su implementación en Django no es muy complicada para implementarse dentro de un template de una página, para finalizar este apartado queda concluir que LocalStorage proporciona mucha facilidad de acceso para almacenar, conservar y reutilizar cualquier tipo de información simple sin mucha complicación y existe mucha información que permite darle un gran uso a esta función
 ## Implementación de LocalStorage en el proyecto
+
 ![image](https://github.com/user-attachments/assets/f75a41a5-3331-48d0-a46a-32034a8e4902)
+
 Recogida de los valores del formulario: Primero, se recuperan los valores ingresados por el usuario en los campos de nombre de usuario (newUsername), contraseña (newPassword) y rol (role). Esto se hace mediante:
+
 ![image](https://github.com/user-attachments/assets/e269522e-9242-42f1-93c0-4dd540139c44)
+
 Verificación de los campos: Luego, el código verifica si todos los campos del formulario están completos (es decir, que no estén vacíos). Si los campos están completos, se procede a almacenar la información en localStorage. Si no se han completado todos los campos, se muestra un mensaje de error.
 Redirección y mensaje: Después de guardar los datos en localStorage, se muestra un mensaje de alerta indicando que el registro fue exitoso, y luego redirige al usuario a la página de inicio de sesión (/login/)
 Guardado en localStorage: Si todos los campos están completos, se crea un objeto user que contiene los datos del usuario:
