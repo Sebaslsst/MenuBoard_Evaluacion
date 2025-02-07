@@ -90,10 +90,5 @@ def grafico_producto(request):
     return HttpResponse(buffer, content_type='image/png')
 
 
-def checkout(request, factura_id):
-    # Procesa la factura por su ID
-    return HttpResponse(f"Procesando factura con ID: {factura_id}")
 
 
-def index(request):
-    return render(request, 'index.html')

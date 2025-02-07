@@ -1,12 +1,17 @@
-from django.contrib import admin
-
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from .models import (
     Insumo, Operacion, Historial, Alerta, ReporteConsumo, Inventario, Proveedor,
     Pedido, Categoria, Usuario, Producto, Persona, Administrador, ReporteBodega
 )
 
+from .models import Item
+
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'tipo', 'cantidad', 'caducidad', 'precio')
+    list_filter = ('tipo', 'caducidad')
+    search_fields = ('nombre', 'tipo')
 
 # Configuración del modelo Insumo
 @admin.register(Insumo)

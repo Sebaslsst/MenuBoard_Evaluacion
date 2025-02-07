@@ -108,8 +108,6 @@
                     <label for="role">Rol:</label>
                     <select id="role" name="role" required>
                         <option value="">Selecciona el rol</option>
-                        <option value="admin">Admin</option>
-                        <option value="pharmacist">Empleado</option>
                         <option value="assistant">Cliente</option>
                     </select>
                 </div>
@@ -132,6 +130,14 @@
             errorMessage.textContent = '';
 
             if (newUsername && newPassword && role) {
+                // Guardar los datos en localStorage
+                const user = {
+                    username: newUsername,
+                    password: newPassword,
+                    role: role
+                };
+                localStorage.setItem('registeredUser', JSON.stringify(user));
+
                 alert('Registro exitoso. Redirigiendo a inicio de sesión...');
                 window.location.href = '/login/';
             } else {

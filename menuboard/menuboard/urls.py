@@ -17,22 +17,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from facturacionapp import views
-
+from inventario.views import  *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('checkout/',views.checkout),
-    path('create-checkout-session/',views.create_checkout_session),
-    path('success/',views.payment_success),
-    path('cancel/',views.payment_cancel),
-    path('Facturacion/',include('facturacionapp.urls')),
     path('home/',views.home),
-    path('index/',views.index),
     path('login/',views.login),
     path('inventario/',views.inventario),
     path('registrate/',views.registrate),
     path('',views.inicio),
-    path('guardar_item/', views.guardar_item, name='guardar_item'),
     path('guardar_item/<int:id>/', views.guardar_item, name='guardar_item'),
-
+    path('menu/',views.menu),
+    path('reservacion/',views.reservacion),
+    path('compra/',views.compra),
+    path('comienzo/',views.comienzo),
+    path('listar/', listar_insumos, name='listar_insumos'),
+    path('inventario/guardar/', guardar_item, name='guardar_item'),
+    path('inventario/guardar/<int:item_id>/', guardar_item, name='guardar_item'),
+    path('inventario/', inventario_view, name='inventario'),
+    path('filtrar/', filtrar_item, name='filtrar_item'),
+    path('pedido/',views.pedido),
+    path('google/', include('googleMaps.urls')),
 ]

@@ -1,12 +1,8 @@
-from django.db import models
-
-# Create your models here.
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
 from abc import ABC, abstractmethod
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 class GestionInventario(ABC):
@@ -213,3 +209,20 @@ def actualizar_inventario(sender, instance, **kwargs):
 
     # Verificar niveles de reorden después de actualizar el inventario
     insumo.verificar_nivel_reorden()
+
+
+
+class Item(models.Model):
+    nombre = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=50, choices=[
+        ('Vegetal', 'Vegetal'),
+        ('Carne', 'Carne'),
+        ('Grano', 'Grano'),
+        # Agrega más tipos si es necesario
+    ])
+    cantidad = models.PositiveIntegerField()
+    caducidad = models.DateField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def _str_(self):
+        return f"{self.nombre} - {self.tipo}"

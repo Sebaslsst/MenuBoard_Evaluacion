@@ -131,11 +131,16 @@
 
             errorMessage.textContent = '';
 
+            // Obtener los datos del usuario registrado desde localStorage
+            const registeredUser = JSON.parse(localStorage.getItem('registeredUser'));
+
             if (username === 'Sebas12' && password === '12345' && role === 'admin') {
                 window.location.href = '/admin';
             } else if (username === 'Juan13' && password === 'empleado123' && role === 'pharmacist') {
                 window.location.href = '/inventario';
             } else if (username === 'Pedro14' && password === 'cliente123' && role === 'assistant') {
+                window.location.href = '/home';
+            } else if (registeredUser && username === registeredUser.username && password === registeredUser.password && role === registeredUser.role) {
                 window.location.href = '/home';
             } else {
                 errorMessage.textContent = 'Credenciales o rol no válidos. Por favor inténtalo de nuevo.';
