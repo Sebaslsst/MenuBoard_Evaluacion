@@ -1,5 +1,5 @@
 # Grupo 5
-# Programación Orientada a Objetos.
+# Programación Orientada a Objetos - Evaluación Unidad 3
 Este repositorio contiene la Evaluación Final de Programación Orientada a Objetos.
 # Docente de la materia:
 Ing. Edison Coronel.
