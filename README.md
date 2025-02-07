@@ -64,7 +64,8 @@ Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tie
 
 ![Captura de Pantalla 2025-02-06 a la(s) 23 34 44](https://github.com/user-attachments/assets/791a822b-1f48-43f7-b20f-55ee1ca05a34)
 
-![Captura de Pantalla 2025-02-06 a la(s) 23 34 51](https://github.com/user-attachments/assets/1d79a34c-1613-4b24-8719-5f1aabe37126)
+![Captura de Pantalla 2025-02-06 a la(s) 23 34 51](https://github.com/user-attachments/assets/64ddeaa8-8d2e-4535-bb11-0a2d73c56272)
+
 
 - Menu (Para inventario, para añadir un insumo )
 ![WhatsApp Image 2025-02-07 at 00 03 37](https://github.com/user-attachments/assets/3bbef64b-c0c4-4ff0-ae20-c4c1ac97b185)
