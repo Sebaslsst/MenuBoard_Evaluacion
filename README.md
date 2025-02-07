@@ -62,8 +62,6 @@ Utilizamos colores llamativos, aparte de que nuestro proyecto de restaurante tie
 
 - Botones (Revisar Menu, Reservar mesas, Pedidos)
 
-![Captura de Pantalla 2025-02-06 a la(s) 23 34 44](https://github.com/user-attachments/assets/791a822b-1f48-43f7-b20f-55ee1ca05a34)
-
 ![Captura de Pantalla 2025-02-06 a la(s) 23 34 51](https://github.com/user-attachments/assets/64ddeaa8-8d2e-4535-bb11-0a2d73c56272)
 
 
