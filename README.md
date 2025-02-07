@@ -15,7 +15,7 @@ Ing. Edison Coronel.
 - Luis Blacio.
   luis.blacio@unl.edu.ec
   
-# Modulos empleados dentro del proyecto
+# Modulos que se emplearon dentro del proyecto
 
 ## Modulos de Mesas y Reservaciones
 Este módulo gestiona la disponibilidad y uso de las mesas dentro del restaurante. Las mesas pueden estar en diferentes estados, tales como libre, ocupada o reservada. Los clientes pueden hacer reservaciones de mesas con antelación, especificando la fecha y hora de la reserva. Es necesario gestionar las características de cada mesa, como el número de asientos y su ubicación en el restaurante. Cuando un cliente llega, una mesa puede ser asignada, y al finalizar su uso, la mesa debe ser liberada para otros clientes. Las reservaciones pueden ser modificadas o canceladas por el cliente o el personal del restaurante.
