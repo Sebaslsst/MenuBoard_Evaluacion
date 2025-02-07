@@ -30,6 +30,7 @@ Despues de diversos inconvenientes con las anteriores APIS a aplicar, se aplico 
 - Restricciones en la cantidad de solicitudes por segundo según el plan.
 - Necesidad de cumplir con los términos de uso de Google, lo que impide almacenar datos localmente sin permisos específicos.
 ##  API localStorage
+
 ### Funcionalidades:
 - Permite almacenar datos en el navegador del usuario en pares clave-valor.
 - Los datos persisten incluso después de cerrar y reabrir el navegador.
